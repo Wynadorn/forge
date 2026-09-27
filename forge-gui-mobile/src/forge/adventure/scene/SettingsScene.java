@@ -320,6 +320,7 @@ public class SettingsScene extends UIScene {
         });
         addCheckBox(localizer.getMessage("lblPromptAutoSell"), ForgePreferences.FPref.PROMPT_FOR_AUTOSELL);
         addCheckBox(localizer.getMessage("lblAutoSellVariantsCommander"), ForgePreferences.FPref.ADV_COMMANDER_AUTOSELL_VARIANT);
+        addCheckBox(localizer.getMessage("lblEventsAlwaysAwardCards"), ForgePreferences.FPref.ADV_EVENTS_ALWAYS_AWARD_CARDS);
         addCheckBox(localizer.getMessage("lblShowCardPriceRewardScreen"), ForgePreferences.FPref.ADV_DISPLAY_PRICE_IN_REWARD_SCREEN);
         addCheckBox(localizer.getMessage("lblCardName"), ForgePreferences.FPref.UI_OVERLAY_CARD_NAME);
         addSettingSlider(localizer.getMessage("cbAdjustMusicVolume"), ForgePreferences.FPref.UI_VOL_MUSIC, 0, 100);

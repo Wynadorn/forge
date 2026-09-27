@@ -737,10 +737,12 @@ public class AdventureEventData implements Serializable {
 
         //Todo: this should be automatic... "somehow"
 
+        boolean alwaysAwardCards = FModel.getPreferences().getPrefBoolean(forge.localinstance.properties.ForgePreferences.FPref.ADV_EVENTS_ALWAYS_AWARD_CARDS);
+
         if (format == AdventureEventController.EventFormat.Draft) {
 
             rewards[3] = new AdventureEventReward();
-            rewards[3].minWins = 3;
+            rewards[3].minWins = alwaysAwardCards ? 0 : 3;
             rewards[3].maxWins = 3;
             rewardDeck.setName("Drafted Deck");
             rewardDeck.setComment(Forge.getLocalizer().getMessage("advPrizeDraftFirst"));
@@ -749,7 +751,7 @@ public class AdventureEventData implements Serializable {
         } else if (format == AdventureEventController.EventFormat.Sealed) {
 
             rewards[3] = new AdventureEventReward();
-            rewards[3].minWins = 3;
+            rewards[3].minWins = alwaysAwardCards ? 0 : 3;
             rewards[3].maxWins = 3;
             rewardDeck.setName("Sealed Card Pool");
             rewardDeck.setComment(Forge.getLocalizer().getMessage("advPrizeSealedFirst"));
@@ -873,7 +875,8 @@ public class AdventureEventData implements Serializable {
                     description += "\n";
                 }
             }
-            description += String.format("Prizes\nChampion: Keep drafted deck\n2+ round wins: Challenge Coin \n1+ round wins: %s Booster, %s Booster\n0 round wins: %s Booster", rewardPacks[0].getComment(), rewardPacks[1].getComment(), rewardPacks[2].getComment());
+            boolean alwaysAwardCards = FModel.getPreferences().getPrefBoolean(forge.localinstance.properties.ForgePreferences.FPref.ADV_EVENTS_ALWAYS_AWARD_CARDS);
+            description += String.format("Prizes\n%s: Keep drafted deck\n2+ round wins: Challenge Coin \n1+ round wins: %s Booster, %s Booster\n0 round wins: %s Booster", alwaysAwardCards ? "All records" : "Champion", rewardPacks[0].getComment(), rewardPacks[1].getComment(), rewardPacks[2].getComment());
         } else if (format == AdventureEventController.EventFormat.Jumpstart) {
             description = "Event Type: Jumpstart\n";
             description += "Block: " + getCardBlock() + "\n";
@@ -910,8 +913,9 @@ public class AdventureEventData implements Serializable {
                 }
             }
 
+            boolean alwaysAwardCards = FModel.getPreferences().getPrefBoolean(forge.localinstance.properties.ForgePreferences.FPref.ADV_EVENTS_ALWAYS_AWARD_CARDS);
             description += "Prizes\n";
-            description += localizer.getMessage("advSealedChampionPrize", packConfiguration.length);
+            description += localizer.getMessage(alwaysAwardCards ? "advSealedAlwaysAwardPrize" : "advSealedChampionPrize", packConfiguration.length);
             description += "2+ wins: Silver Challenge Coin\n";
             description += String.format("1+ wins: %s Booster, %s Booster\n", rewardPacks[1].getComment(), rewardPacks[2].getComment());
             description += String.format("0 wins: %s Booster", rewardPacks[0].getComment());
