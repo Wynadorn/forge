@@ -17,6 +17,13 @@ public class ShardTraderScene extends UIScene {
     public static final String spriteAtlas = "maps/tileset/buildings.atlas";
     public static final String sprite = "ShardTrader";
 
+    /** Gold cost to buy {@link #SHARD_BUY_QUANTITY} shards at the trader. */
+    public static final int SHARD_BUY_GOLD_COST = 100;
+    /** Number of shards received per {@link #SHARD_BUY_GOLD_COST} gold spent. */
+    public static final int SHARD_BUY_QUANTITY = 5;
+    /** Effective gold cost per shard when buying from the trader - used to keep other gold/shard prices (e.g. event entry fees) in sync. */
+    public static final int GOLD_PER_SHARD = SHARD_BUY_GOLD_COST / SHARD_BUY_QUANTITY;
+
     public static ShardTraderScene instance() {
         if(object==null)
             object=new ShardTraderScene();
@@ -30,11 +37,11 @@ public class ShardTraderScene extends UIScene {
 
     int shardsToSell = 5;
 
-    int shardsToBuy = 5;
+    int shardsToBuy = SHARD_BUY_QUANTITY;
 
     int shardPrice = Math.round(100 * Current.player().getDifficulty().shardSellRatio);
 
-    int shardCost = 100;
+    int shardCost = SHARD_BUY_GOLD_COST;
 
     private ShardTraderScene() {
         super(Forge.isLandscapeMode() ? "ui/shardtrader.json" : "ui/shardtrader_portrait.json");
