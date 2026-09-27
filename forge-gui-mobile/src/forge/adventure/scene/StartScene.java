@@ -27,7 +27,7 @@ import java.io.IOException;
  */
 public class StartScene extends UIScene {
     private static StartScene object;
-    Dialog exitDialog, backupDialog, zipDialog, unzipDialog;
+    Dialog exitDialog, backupDialog, zipDialog, unzipDialog, switchDialog;
     TextraButton saveButton, resumeButton, continueButton;
     TypingLabel version = Controls.newTypingLabel("{GRADIENT}[%80]v." + Forge.getDeviceAdapter().getVersionString() + "{ENDGRADIENT}");
 
@@ -225,8 +225,16 @@ public class StartScene extends UIScene {
     }
 
     public void switchToClassic() {
-        SoundSystem.instance.stopBackgroundMusic();
-        Forge.switchToClassic();
+        if (switchDialog == null) {
+            switchDialog = createGenericDialog(Forge.getLocalizer().getMessage("lblClassicMode"),
+                    Forge.getLocalizer().getMessage("lblAreYouSureYouWishSwitchToClassic"), Forge.getLocalizer().getMessage("lblOK"),
+                    Forge.getLocalizer().getMessage("lblAbort"), () -> {
+                        SoundSystem.instance.stopBackgroundMusic();
+                        Forge.switchToClassic();
+                        removeDialog();
+                    }, this::removeDialog);
+        }
+        showDialog(switchDialog);
     }
 
     public void updateResumeContinue() {
