@@ -223,6 +223,14 @@ public class SettingsScene extends UIScene {
                 Config.instance().saveSettings();
             }
         });
+        addSettingField(localizer.getMessage("lblBestOfOne"),
+                Config.instance().getSettingData().bestOfOneMatches, new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                Config.instance().getSettingData().bestOfOneMatches = ((CheckBox) actor).isChecked();
+                Config.instance().saveSettings();
+            }
+        });
         addSettingField(localizer.getMessage("lblDisableNotForSaleOverlay"),
                 Config.instance().getSettingData().disableNotForSale, new ChangeListener() {
             @Override
