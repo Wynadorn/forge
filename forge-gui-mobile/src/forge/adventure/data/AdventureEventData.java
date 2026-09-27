@@ -1035,7 +1035,6 @@ public class AdventureEventData implements Serializable {
 
         public AdventureEventRules(AdventureEventController.EventFormat format, PairingStyle pairingStyle, float localPriceModifier) {
             int baseGoldEntry = 99999;
-            int baseShardEntry = 9999;
             this.pairingStyle = pairingStyle;
 
             switch (format) {
@@ -1044,7 +1043,6 @@ public class AdventureEventData implements Serializable {
                     acceptsChallengeCoin = false;
                     acceptsBronzeChallengeCoin = false;
                     baseGoldEntry = 1500;
-                    baseShardEntry = 25;
                     allowsAddBasicLands = false;
                     break;
                 case Draft:
@@ -1052,7 +1050,6 @@ public class AdventureEventData implements Serializable {
                     acceptsSilverChallengeCoin = false;
                     acceptsBronzeChallengeCoin = false;
                     baseGoldEntry = 3000;
-                    baseShardEntry = 50;
                     startingLife = 20;
                     allowsAddBasicLands = true;
                     break;
@@ -1061,7 +1058,6 @@ public class AdventureEventData implements Serializable {
                     acceptsSilverChallengeCoin = true;
                     acceptsBronzeChallengeCoin = false;
                     baseGoldEntry = 6000;
-                    baseShardEntry = 100;
                     startingLife = 20;
                     allowsAddBasicLands = true;
                     break;
@@ -1070,13 +1066,17 @@ public class AdventureEventData implements Serializable {
                     acceptsSilverChallengeCoin = false;
                     acceptsBronzeChallengeCoin = true;
                     baseGoldEntry = 200;
-                    baseShardEntry = 5;
                     startingLife = 15;
                     allowsAddBasicLands = false;
                     break;
             }
             goldToEnter = baseGoldEntry;
-            shardsToEnter = baseShardEntry;
+            //Shard entry cost is derived from the gold entry cost using the Shard Trader's buy rate,
+            //so paying with gold directly or buying shards with gold first cost the same amount overall.
+            shardsToEnter = baseGoldEntry / forge.adventure.scene.ShardTraderScene.GOLD_PER_SHARD;
+            if (Config.instance().getSettingData().bestOfOneMatches) {
+                gamesPerMatch = 1;
+            }
         }
 
         public String getPairingDescription() {
