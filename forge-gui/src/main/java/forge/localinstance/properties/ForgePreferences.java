@@ -350,7 +350,8 @@ public class ForgePreferences extends AbstractPreferences<ForgePreferences.FPref
 
         LAST_IMPORTED_CUBE_ID(""),
 
-        ADV_DISPLAY_PRICE_IN_REWARD_SCREEN("true");
+        ADV_DISPLAY_PRICE_IN_REWARD_SCREEN("true"),
+        ADV_EVENTS_ALWAYS_AWARD_CARDS("true");
 
         private final String strDefaultVal;
 
