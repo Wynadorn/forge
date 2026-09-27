@@ -1077,6 +1077,9 @@ public class AdventureEventData implements Serializable {
             }
             goldToEnter = baseGoldEntry;
             shardsToEnter = baseShardEntry;
+            if (Config.instance().getSettingData().bestOfOneMatches) {
+                gamesPerMatch = 1;
+            }
         }
 
         public String getPairingDescription() {
