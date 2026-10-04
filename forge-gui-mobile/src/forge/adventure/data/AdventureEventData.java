@@ -859,7 +859,7 @@ public class AdventureEventData implements Serializable {
             description = localizer.getMessage("advEventTypeBoosterDraft");
             description += "Block: " + getCardBlock() + "\n";
             description += "Boosters: " + String.join(", ", packConfiguration) + "\n";
-            description += "Competition Style: " + participants.length + " players, matches played as best of " + eventRules.gamesPerMatch + ", " + (eventRules.getPairingDescription()) + "\n\n";
+            description += "Competition Style: " + participants.length + " players, matches played as best of " + eventRules.getGamesPerMatch() + ", " + (eventRules.getPairingDescription()) + "\n\n";
 
             if (eventStatus == AdventureEventController.EventStatus.Available) {
                 description += String.format("Pay 1 Entry Fee\n- Gold %d[][+Gold][BLACK]\n- Mana Shards %d[][+Shards][BLACK]\n", Math.round(eventRules.goldToEnter * townPriceModifier), Math.round(eventRules.shardsToEnter * townPriceModifier));
@@ -877,7 +877,7 @@ public class AdventureEventData implements Serializable {
         } else if (format == AdventureEventController.EventFormat.Jumpstart) {
             description = "Event Type: Jumpstart\n";
             description += "Block: " + getCardBlock() + "\n";
-            description += "Competition Style: " + participants.length + " players, matches played as best of " + eventRules.gamesPerMatch + ", " + (eventRules.getPairingDescription()) + "\n\n";
+            description += "Competition Style: " + participants.length + " players, matches played as best of " + eventRules.getGamesPerMatch() + ", " + (eventRules.getPairingDescription()) + "\n\n";
             description += String.format("Pay 1 Entry Fee\n- Gold %d[][+Gold][BLACK]\n- Mana Shards %d[][+Shards][BLACK]\n", Math.round(eventRules.goldToEnter * townPriceModifier), Math.round(eventRules.shardsToEnter * townPriceModifier));
             if (eventRules.acceptsBronzeChallengeCoin) {
                 description += "- Bronze Challenge Coin [][+BronzeChallengeCoin][BLACK]\n\n";
@@ -896,7 +896,7 @@ public class AdventureEventData implements Serializable {
             description += "Boosters: " + packConfiguration.length + " Packs (" +
                     String.join(", ", packConfiguration) + ")\n";
             description += "Competition Style: " + participants.length + " players, matches played as best of " +
-                    eventRules.gamesPerMatch + ", " + (eventRules.getPairingDescription()) + "\n\n";
+                    eventRules.getGamesPerMatch() + ", " + (eventRules.getPairingDescription()) + "\n\n";
 
             if (eventStatus == AdventureEventController.EventStatus.Available) {
                 description += String.format("Pay 1 Entry Fee\n- Gold %d[][+Gold][BLACK]\n- Mana Shards %d[][+Shards][BLACK]\n",
@@ -1022,7 +1022,6 @@ public class AdventureEventData implements Serializable {
         public boolean allowsItems = false;
         public boolean allowsBlessings = false;
         public boolean allowsAddBasicLands = true;
-        public int gamesPerMatch = 3;
         public PairingStyle pairingStyle = PairingStyle.SingleElimination;
 
         public AdventureEventRules() {
@@ -1077,9 +1076,13 @@ public class AdventureEventData implements Serializable {
             }
             goldToEnter = baseGoldEntry;
             shardsToEnter = baseShardEntry;
-            if (Config.instance().getSettingData().bestOfOneMatches) {
-                gamesPerMatch = 1;
-            }
+        }
+
+        // Read live rather than baked-in at construction time, so toggling the setting
+        // takes effect for any event that hasn't started its next match yet, even if the
+        // event object itself was created before the setting was changed.
+        public int getGamesPerMatch() {
+            return Config.instance().getSettingData().bestOfOneMatches ? 1 : 3;
         }
 
         public String getPairingDescription() {
