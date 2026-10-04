@@ -529,7 +529,7 @@ public class DuelScene extends ForgeScene {
 
         if (eventData != null) {
             rules = new GameRules(eventData.eventRules.gameType);
-            rules.setGamesPerMatch(eventData.eventRules.gamesPerMatch);
+            rules.setGamesPerMatch(eventData.eventRules.getGamesPerMatch());
             bossBattle = false;
         } else {
             rules = new GameRules(GameType.Adventure);
